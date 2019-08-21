@@ -1,0 +1,236 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            display: flex;
+            flex-flow: row;
+        }
+        
+        .header-footer {
+            background-color: rgb(84, 72, 190);
+        }
+        
+        main {
+            bottom: 50px;
+        }
+        
+        footer {
+            bottom: 0;
+            width: 100%;
+            position: fixed;
+        }
+        
+        aside {
+            display: block;
+        }
+        
+        .menu {
+            margin: 0;
+            padding: 0;
+            width: 200px;
+            background-color: #f1f1f1d5;
+        }
+        
+        li.menu-item a:hover {
+            background-color: #555;
+            color: white;
+        }
+        
+        .menu-item a {
+            display: block;
+            color: #000;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+        
+        #Home-content {
+            display: flex;
+        }
+        
+        .section {
+            position: absolute;
+            top: 20%;
+            left: 40%;
+            text-align: center;
+            display: none;
+        }
+        
+        #ToDo-content {
+            left: 25%;
+            width: 50%;
+            border-collapse: collapse;
+        }
+        
+        table,
+        td,
+        th {
+            border: 1px solid black;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+        }
+        
+        tr:hover {
+            background-color: #105e2e56;
+        }
+        
+        .autopopulate {
+            position: relative;
+        }
+        
+        .list {
+            position: absolute;
+            top: 35px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header-footer">
+        <h1>
+            To Do Assignment
+        </h1>
+    </header>
+    <br>
+    <main>
+
+    </main>
+    <div class="container">
+        <div calss="navbar">
+            <aside>
+                <ul class="menu">
+                    <li class="menu-item"><a href="javascript:void(0)" data-tab="Home" onclick="return changeTab(this)">HOME</a></li>
+                    <li class="menu-item"><a href="javascript:void(0)" data-tab="ToDo" onclick="return changeTab(this)">TODO LIST</a></li>
+                    <li class="menu-item"><a href="javascript:void(0)" data-tab="User" onclick="return changeTab(this)">USER</a></li>
+                    <li class="menu-item"><a href="javascript:void(0)" data-tab="Logout" onclick="return changeTab(this)">LOGOUT</a></li>
+                </ul>
+            </aside>
+        </div>
+        <div id="Home-content" class="section">
+            <h1> This is the Home Page</h1>
+        </div>
+        <div id="User-content" class="section">
+            <h1> This is the User Page</h1>
+        </div>
+        <div id="Logout-content" class="section">
+            <h1> This is the Logout Page</h1>
+        </div>
+        <div id="ToDo-content" class="section">
+            <div class="autopopulate">
+                <input type="text" id="search" name="searchbar" value="" onkeypress="return showSuggestion(document.getElementById('search').value)" onblur="return hideSuggestion(this)">
+                <a href="javascript:void(0)"><i class="fas fa-search"></i></a>
+                <a href="javascript:void(0)"><i class="fas fa-plus" onclick="addInList()"></i></a><br>
+            </div>
+            <div class="list">
+                <table class="ToDo" id="myTable">
+                    <tr>
+                        <th>Item</th>
+                        <th>Action</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <footer class="header-footer">
+        <h1>
+            Copyright By ...
+        </h1>
+    </footer>
+    <script>
+        updateList(listItem);
+
+        function changeTab(element) {
+            var tab = element.getAttribute("data-tab");
+            var allTab = document.querySelectorAll(".section");
+            for (var i = 0; i < allTab.length; i++) {
+                allTab[i].style.display = "none";
+            }
+            document.getElementById(tab + "-content").style.display = "flex";
+        }
+        var suggestions = new Array();
+
+        function addInList() {
+            var table = document.getElementById("myTable");
+            var value = document.getElementById("search").value;
+            var body = '<tr class="rows">' +
+                '<td class="editvalue" >' + value + '</td>' +
+                '<td >' +
+                '<a href="javascript:void(0)" onclick="editText(this)">EDIT </a>' + '&nbsp' +
+                '<a href="javascript:void(0)" onclick="return deleteRow(this)"> DELETE </a>' +
+                '</td>' +
+                '</tr>'
+            table.innerHTML += body;
+            suggestions.push(value);
+        }
+
+        function showSuggestion(inputvalue) {
+            /* var sortedList = [];
+             input = Document.getElementById("search");
+             hideallLists();
+             var a, b;
+             a = document.createElement("DIV");
+             a.setAttribute("id", input.id + "suggestionlist");
+             a.setAttribute("class", "listitems");
+             input.parentNode.appendChild(a);
+
+             for (i = 0; i < suggestions.length; i++) {
+                 if (suggestions[i].substr(0, inputvalue.length).toUpperCase() == inputvalue.toUpperCase()) {
+                     sortedlist.push(suggestions[i]);
+                 }
+                 document.getElementById("searchList").style.display = "block";
+             }
+             for (i = 0; i < sortedlist.length; i++) {
+                 b = document.createElement("DIV");
+                 b.setAttribute("id", "finallist");
+                 b.innerHTML = sortedlist[i];
+                 b.innerHTML += "<input type='hidden' value='" + sortedlist[i] + "'>";
+                 b.onclick = function() {
+                     input.value = this.getElementsByTagName("input")[0].value;
+                     hideallLists();
+
+                 };
+                 a.appendChild(b);*/
+        }
+
+        function hideallLists() {
+            var x = document.getElementsByClassName("listitems");
+            for (var i = 0; i < x.length; i++) {
+                x[i].parentNode.removeChild(x[i]);
+            }
+        }
+
+        function hideSuggestion(element) {
+            document.getElementById("searchList").style.display = "none";
+        }
+
+
+        function editText(x) {
+            var person = prompt("Please update the item", document.getElementById("myTable").rows[x.parentNode.parentNode.rowIndex].cells[0].innerHTML);
+            document.getElementById("myTable").rows[x.parentNode.parentNode.rowIndex].cells[0].innerHTML = person;
+
+
+        }
+
+        function deleteRow(x) {
+            document.getElementById("myTable").deleteRow(x.parentNode.parentNode.rowIndex);
+        }
+    </script>
+</body>
+
+</html>
