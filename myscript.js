@@ -6,23 +6,28 @@ function changeTab(element) {
     for (var i = 0; i < allTab.length; i++) {
         allTab[i].style.display = "none";
     }
-    document.getElementById(tab + "-content").style.display = "flex";
+    document.getElementById(tab + "-content").style.display = "block";
 }
 var suggestions = new Array();
 
 function addInList() {
     var table = document.getElementById("myTable");
     var value = document.getElementById("search").value;
-    var abc = document.getElementById("search");
-    var body = '<tr class="rows">' +
-        '<td class="editvalue" >' + value + '</td>' +
-        '<td >' +
-        '<a href="javascript:void(0)" onclick="editText(this)">EDIT </a>' + '&nbsp' +
-        '<a href="javascript:void(0)" onclick="return deleteRow(this)"> DELETE </a>' +
-        '</td>' +
-        '</tr>'
-    table.innerHTML += body;
-    suggestions.push(value);
+    if (value == "" || value == null)
+        alert("Please enter a value");
+    else if (suggestions.includes(value))
+        alert("Item already exists");
+    else {
+        var body = '<tr class="rows">' +
+            '<td class="editvalue" >' + value + '</td>' +
+            '<td >' +
+            '<a href="javascript:void(0)" onclick="editText(this)">EDIT </a>' + '&nbsp' +
+            '<a href="javascript:void(0)" onclick="return deleteRow(this)"> DELETE </a>' +
+            '</td>' +
+            '</tr>'
+        table.innerHTML += body;
+        suggestions.push(value);
+    }
 }
 
 function showSuggestion(inputvalue) {
@@ -40,7 +45,6 @@ function showSuggestion(inputvalue) {
     for (i = 0; i < suggestions.length; i++) {
         if (suggestions[i].substr(0, inputvalue.length).toUpperCase() == inputvalue.toUpperCase()) {
             sortedlist.push(suggestions[i]);
-
         }
     }
 
@@ -52,7 +56,6 @@ function showSuggestion(inputvalue) {
         b.onclick = function() {
             inputelement.value = this.getElementsByTagName("input")[0].value;
             hideallLists();
-
         };
         a.appendChild(b);
     }
@@ -73,12 +76,15 @@ function hideSuggestion() {
 
 
 function editText(x) {
-    var person = prompt("Please update the item", document.getElementById("myTable").rows[x.parentNode.parentNode.rowIndex].cells[0].innerHTML);
-    document.getElementById("myTable").rows[x.parentNode.parentNode.rowIndex].cells[0].innerHTML = person;
-
-
+    var previousValue = document.getElementById("myTable").rows[x.parentNode.parentNode.rowIndex].cells[0].innerHTML
+    var updatedValue = prompt("Please update the item", previousValue);
+    document.getElementById("myTable").rows[x.parentNode.parentNode.rowIndex].cells[0].innerHTML = updatedValue;
+    var str = suggestions.toString();
+    str = str.replace(previousValue, updatedValue);
+    suggestions = str.split(',');
 }
 
 function deleteRow(x) {
     document.getElementById("myTable").deleteRow(x.parentNode.parentNode.rowIndex);
+    suggestions.pop(suggestions[x.parentNode.parentNode.rowIndex]);
 }
