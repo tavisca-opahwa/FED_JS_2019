@@ -78,6 +78,9 @@ function hideSuggestion() {
 function editText(x) {
     var previousValue = document.getElementById("myTable").rows[x.parentNode.parentNode.rowIndex].cells[0].innerHTML
     var updatedValue = prompt("Please update the item", previousValue);
+    if (updatedValue == null || updatedValue == "") {
+        updatedValue = previousValue;
+    }
     document.getElementById("myTable").rows[x.parentNode.parentNode.rowIndex].cells[0].innerHTML = updatedValue;
     var str = suggestions.toString();
     str = str.replace(previousValue, updatedValue);
